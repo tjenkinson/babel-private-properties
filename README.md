@@ -1,4 +1,4 @@
-# babel-plugin-private-properties
+# babel-private-properties
 
 When building a library it is common practice to mark properties as private by prefixing them with an underscore.
 
