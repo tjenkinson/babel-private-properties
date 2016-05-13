@@ -12,7 +12,7 @@ module.exports = function(babel) {
 				}
 				var toHash = name;
 				if (state.opts.salt) {
-					toHash += ":"+salt;
+					toHash += ":"+state.opts.salt;
 				}
 				// replace the identifier with a hash
 				path.node.name = "_"+crypto.createHash('md5').update(toHash).digest("hex");
