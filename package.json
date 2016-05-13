@@ -1,0 +1,10 @@
+{
+  "name": "babel-private-properties",
+  "description": "A babel plugin which will convert all private properties (identifiers) to md5 hashes.",
+  "version": "0.0.0",
+  "main": "index.js",
+  "author": "Tom Jenkinson <tjcode@outlook.com>",
+  "repository": "tjenkinson/babel-private-properties",
+  "license": "MIT",
+  "keywords": "babel-plugin, babel, private, hash"
+}
