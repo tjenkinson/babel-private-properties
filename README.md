@@ -7,7 +7,7 @@ This plugin replaces any properties that are prefixed with an underscore with ha
 
 ## Install
 ```bash
-npm install --savedev babel-private-properties
+npm install --save-dev babel-private-properties
 ```
 
 ## Example
