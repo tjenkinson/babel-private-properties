@@ -14,8 +14,20 @@ module.exports = function(babel) {
 				if (state.opts.salt) {
 					toHash += ":"+state.opts.salt;
 				}
-				// replace the identifier with a hash
-				path.node.name = "_"+crypto.createHash('md5').update(toHash).digest("hex");
+				var hash = crypto.createHash('md5').update(toHash).digest("hex");
+				var hashLength = state.opts.hashLength || 4;
+				if (hashLength > 32 || hashLength <= 0) {
+					throw new Error("Hash length must be <= 32.");
+				}
+				hash = hash.substring(0, hashLength);
+				if (state.opts.replaceCompletely) {
+					// replace the identifier with a hash
+					path.node.name = "_"+hash;
+				}
+				else {
+					// append the hash to the current identifier
+					path.node.name += hash;
+				}
 			}
 		}
 	};

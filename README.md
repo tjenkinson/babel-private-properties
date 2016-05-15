@@ -3,7 +3,7 @@
 
 When building a library it is common practice to mark properties as private by prefixing them with an underscore.
 
-This plugin replaces any properties that are prefixed with an underscore with hashes of their names to make it even clearer that these properties are intended for internal use only. You can provide a custom salt making it possible to generate different hashes for each build.
+This plugin appends a few characters to any properties that are prefixed with an underscore to make it even clearer that these properties are intended for internal use only. The characters are the first part of an md5 hash of the identifier. You can provide a custom salt making it possible to generate different hashes for each build.
 
 ## Install
 ```bash
@@ -37,17 +37,17 @@ to
 ```js
 function HelloLib(name) {
     // don't want users to access this directly
-    this._9acade405c8dd987b11389613578be32 = name;
+    this._name9aca = name;
 }
 
 // don't want users to call this directly
-HelloLib.prototype._411c21a26f496f81c64d325c9ac50f93 = function () {
-    return this._9acade405c8dd987b11389613578be32;
+HelloLib.prototype._getName411c = function () {
+    return this._name9aca;
 };
 
 // This method is public and should be called externally
 HelloLib.prototype.sayHello = function () {
-    var name = this._411c21a26f496f81c64d325c9ac50f93();
+    var name = this._getName411c();
     console.log("Hello " + name + "!");
 };
 
@@ -68,7 +68,9 @@ Set plugin options using an array of `[pluginName, optionsObject]`.
 {
   "plugins": [["babel-private-properties", {
     "prefix": "_",
-    "salt": "salt"
+    "salt": "salt",
+    "hashLength": 4,
+    "replaceCompletely": false
   }]]
 }
 ```
@@ -87,6 +89,8 @@ Set plugin options using an array of `[pluginName, optionsObject]`.
 }
 ```
 
+If the `replaceCompletely` option is `true` the identifiers will be replaced completley with its hash. This isn't recommended as even though it's incredibly unlikely a hash collision could occur. Keeping the original text prevents this.
+
 ### Vary Hashes Per Build
 If you supply the config with webpack you can change the salt dynamically.
 
@@ -98,7 +102,6 @@ If you supply the config with webpack you can change the salt dynamically.
     'exclude': /node_modules/,
     'query': {
       'plugins': [["babel-private-properties", {
-        "prefix": "_",
         "salt": Math.random() // Each build will have unique private property names
       }]]
     }
